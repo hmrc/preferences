@@ -1,0 +1,2 @@
+POST        /preferences/stats                                          uk.gov.hmrc.preferences.controllers.stats.StatsController.computeStatistics
+GET         /preferences/stats                                          uk.gov.hmrc.preferences.controllers.stats.StatsController.preferencesStats

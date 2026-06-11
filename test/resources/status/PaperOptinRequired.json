@@ -1,0 +1,14 @@
+{
+  "termsAndConditions": {
+    "generic": {
+      "accepted": false,
+      "updatedAt": 1605646279917,
+      "paperless": false
+    }
+  },
+  "digital": false,
+  "status": {
+    "name": "PAPER",
+    "category": "OPT_IN_REQUIRED"
+  }
+}

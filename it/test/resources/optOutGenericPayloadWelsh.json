@@ -1,0 +1,8 @@
+{
+  "generic":{
+    "accepted":false,
+    "optInPage":{
+      "version": {"major":2,"minor":1}, "cohort":1, "pageType":"IPage"}
+  },
+  "language": "cy"
+}

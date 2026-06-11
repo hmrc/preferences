@@ -1,0 +1,41 @@
+
+GET     /preferences                                                                        uk.gov.hmrc.preferences.controllers.PreferencesController.findPreferencesByTaxIdOrAuth(query: PreferencesParams)
+
+
+# microservice app routes
+PUT     /preferences/email                                                                  uk.gov.hmrc.preferences.controllers.EmailVerificationController.verifyEmail()
+
+# NEW endpoints
+POST    /preferences/optin                                                                  uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.updatePreferences()
+POST    /preferences/regime/optin                                                           uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.updatePreferencesWithRegime()
+POST    /preferences/optout                                                                 uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.updatePreferences()
+POST    /preferences/regime/optout                                                          uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.updatePreferencesWithRegime()
+POST    /preferences/email-language                                                         uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.updatePreferences()
+POST    /preferences/regime/email-language                                                  uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.updatePreferencesWithRegime()
+PUT     /preferences/pending-email                                                          uk.gov.hmrc.preferences.controllers.PreferencesController.initiatePendingEmail()
+
+GET     /preferences/verified-email                                                         uk.gov.hmrc.preferences.controllers.PreferencesController.verifiedEmailAddressByRegime(regime: String, taxId: String)
+
+GET     /preferences/:entityId                                                              uk.gov.hmrc.preferences.controllers.PreferencesController.findPreferences(entityId: EntityId)
+
+POST    /preferences/find-by-email                                                          uk.gov.hmrc.preferences.controllers.PreferencesController.findPreferencesByEmail()
+
+GET     /preferences/language/:emailId                                                      uk.gov.hmrc.preferences.controllers.PreferencesController.getLanguageOfEmail(emailId: String)
+PUT     /preferences/:entityId/pending-email                                                uk.gov.hmrc.preferences.controllers.PreferencesController.setPendingEmail(entityId: EntityId)
+PUT     /preferences/:entityId/updated                                                      uk.gov.hmrc.preferences.controllers.PreferencesController.updated(entityId: EntityId)
+
+# DEPRECATED, use optin/optout/email-language instead of terms-and-conditions
+POST    /preferences/:entityId/terms-and-conditions                                         uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
+POST    /preferences/:entityId/optin                                                        uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
+POST    /preferences/:entityId/optout                                                       uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
+POST    /preferences/:entityId/email-language                                               uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
+
+# DEPRECATED, use /preferences-admin/optout
+POST    /preferences-admin/:entityId/terms-and-conditions                                   uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.optOut(entityId: EntityId)
+
+PUT     /preferences/mark-for-de-enrolment                                                  uk.gov.hmrc.preferences.controllers.PreferencesController.markForDeEnrolmentNew(params: TaxIdParams)
+PUT     /preferences/unset-de-enrolment                                                     uk.gov.hmrc.preferences.controllers.PreferencesController.unsetDeEnrolmentNew(params: TaxIdParams)
+
+POST    /preferences/email/bounce                                                           uk.gov.hmrc.preferences.controllers.EmailBounceController.process
+
+GET     /preferences-admin/events/:entityId                                                 uk.gov.hmrc.preferences.controllers.EventsController.getEvents(entityId: EntityId)

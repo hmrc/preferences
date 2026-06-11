@@ -1,0 +1,24 @@
+{
+  "termsAndConditions": {
+    "generic": {
+      "accepted": true,
+      "updatedAt": 1605647000943,
+      "majorVersion": 2,
+      "paperless": true
+    }
+  },
+  "email": {
+    "email": "5c2579e3-8764-439e-b763-569e4cda345f@TEST.com",
+    "isVerified": true,
+    "hasBounces": false,
+    "mailboxFull": false,
+    "verifiedOn": 1605647000943,
+    "status": "verified",
+    "bounceCount": 0
+  },
+  "digital": true,
+  "status": {
+    "name": "ALRIGHT",
+    "category": "INFO"
+  }
+}
