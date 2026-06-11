@@ -1,9 +1,5 @@
 Preferences Microservice
 ========================
-## Notice
-
-This repository has been archived. The latest code has been migrated (in June 2026) to the public repository:
-https://github.com/hmrc/preferences
 
 ## overview
 Preferences microservice provides the ability for user to set preferences for receiving digital or paper communications from HMRC. User is authenticated via the TaxIds that is in authorisation token.
