@@ -1,0 +1,15 @@
+{
+  "termsAndConditions": {
+    "generic": {
+      "accepted": true,
+      "updatedAt": 1605646999487,
+      "majorVersion": 2,
+      "paperless": false
+    }
+  },
+  "digital": true,
+  "status": {
+    "name": "NO_EMAIL",
+    "category": "ACTION_REQUIRED"
+  }
+}

@@ -1,0 +1,2 @@
+alias fmt=;scalafmt;test:scalafmt;it:scalafmt
+alias fmtcheck=;scalafmtCheck;test:scalafmtCheck;it:scalafmtCheck

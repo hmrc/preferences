@@ -1,0 +1,24 @@
+{
+  "termsAndConditions": {
+    "generic": {
+      "accepted": true,
+      "updatedAt": 1605647000634,
+      "majorVersion": 2,
+      "paperless": true
+    }
+  },
+  "email": {
+    "email": "98ad9e76-deed-4051-bbe2-a302072fa937@TEST.com",
+    "isVerified": true,
+    "hasBounces": false,
+    "mailboxFull": false,
+    "verifiedOn": 1605647000634,
+    "status": "verified",
+    "bounceCount": 0
+  },
+  "digital": true,
+  "status": {
+    "name": "ALRIGHT",
+    "category": "INFO"
+  }
+}

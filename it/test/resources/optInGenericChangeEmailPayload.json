@@ -1,0 +1,11 @@
+{
+  "generic": {
+    "accepted": true,
+    "optInPage":{
+      "version": {"major":2,"minor":1}, "cohort":1, "pageType":"IPage"}
+  },
+  "email":"test+1234567@test.com",
+  "language": "en",
+  "returnText":"return-text",
+  "returnUrl":"return-url"
+}

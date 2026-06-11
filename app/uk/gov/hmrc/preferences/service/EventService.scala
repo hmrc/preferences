@@ -1,0 +1,54 @@
+/*
+ * Copyright 2023 HM Revenue & Customs
+ *
+ */
+
+package uk.gov.hmrc.preferences.service
+
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.preferences.model.*
+import uk.gov.hmrc.preferences.model.EmailEventType.{ EmailBounceJourney, EmailBounced }
+import uk.gov.hmrc.preferences.repository.PreferencesRepository
+
+import java.time.Instant
+import javax.inject.{ Inject, Singleton }
+import scala.concurrent.{ ExecutionContext, Future }
+
+@Singleton
+class EventService @Inject() (preferenceRespository: PreferencesRepository)(implicit ec: ExecutionContext) {
+  def getEvents(entityId: EntityId)(implicit hc: HeaderCarrier): Future[Seq[EventsResponse]] =
+    preferenceRespository
+      .findBy(entityId)
+      .map(_.flatMap(_.events).getOrElse(Seq.empty))
+      .map { events =>
+        events.flatMap(event => fromEvent(event))
+      }
+      .map(events => events.sortBy(_.timestamp))
+
+  private def fromEvent(event: Event): Option[EventsResponse] = {
+    def createResponse(
+      eventType: EventType,
+      emailAddress: Option[String],
+      timestamp: Instant,
+      viaMobileApp: Option[Boolean] = None
+    ): EventsResponse =
+      EventsResponse(eventType, emailAddress, timestamp, viaMobileApp.getOrElse(false))
+
+    event match {
+      case e: OptInEvent =>
+        Some(createResponse(e.eventType, e.emailAddress.map(_.email), e.time, Some(e.optInPage.pageType.isMobile)))
+
+      case e: CustomerOptOutEvent =>
+        Some(createResponse(e.eventType, None, e.time, Some(e.optInPage.pageType.isMobile)))
+
+      case e: (AdminOptOutEvent | SystemOptOutEvent) => Some(createResponse(e.eventType, None, e.time))
+
+      case e: EmailEvent if e.eventType == EmailBounced || e.eventType == EmailBounceJourney =>
+        None
+
+      case e: EmailEvent =>
+        Some(createResponse(e.eventType, Some(e.emailAddress), e.time))
+    }
+  }
+
+}

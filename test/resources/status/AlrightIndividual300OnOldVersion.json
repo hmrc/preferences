@@ -1,0 +1,24 @@
+{
+  "termsAndConditions": {
+    "generic": {
+      "accepted": true,
+      "updatedAt": 1605647001288,
+      "majorVersion": 1,
+      "paperless": true
+    }
+  },
+  "email": {
+    "email": "84021f30-b5a8-4523-a2ac-e90fe6865e3a@TEST.com",
+    "isVerified": true,
+    "hasBounces": false,
+    "mailboxFull": false,
+    "verifiedOn": 1605647001288,
+    "status": "verified",
+    "bounceCount": 0
+  },
+  "digital": true,
+  "status": {
+    "name": "OLD_VERSION",
+    "category": "RE_OPT_IN_REQUIRED",
+    "reoptinMajor": 2  }
+}
