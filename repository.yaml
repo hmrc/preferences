@@ -1,1 +1,8 @@
 repoVisibility: public_0C3F0CE3E6E6448FAD341E7BFA50FCD333E06A20CFF05FCACE61154DDBBADF71
+digital-service: Digital Contact
+description: Preferences microservice provides the ability for user to set preferences for receiving digital or paper communications from HMRC. User is authenticated via the TaxIds that is in authorisation token.
+type: service
+service-type: Backend
+test-repositories:
+  - platform-performance-tests
+
