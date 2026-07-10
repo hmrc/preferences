@@ -43,7 +43,7 @@ class ChannelPreferencesConnectorSpec
           )
       )
 
-      connector.updatePreferencesForItsa(testTaxId, true, None).futureValue should be(true)
+      connector.updatePreferencesForItsa(testItsaId, true, None).futureValue should be(true)
     }
 
     "return false on BAD_REQUEST response " in new TestCase {
@@ -55,7 +55,7 @@ class ChannelPreferencesConnectorSpec
           )
       )
 
-      connector.updatePreferencesForItsa(testTaxId, true, None).futureValue should be(false)
+      connector.updatePreferencesForItsa(testItsaId, true, None).futureValue should be(false)
     }
 
     "return false on NOT_FOUND response " in new TestCase {
@@ -67,7 +67,7 @@ class ChannelPreferencesConnectorSpec
           )
       )
 
-      connector.updatePreferencesForItsa(testTaxId, true, None).futureValue should be(false)
+      connector.updatePreferencesForItsa(testItsaId, true, None).futureValue should be(false)
     }
 
     "return false on BAD_GATEWAY response " in new TestCase {
@@ -79,7 +79,7 @@ class ChannelPreferencesConnectorSpec
           )
       )
 
-      connector.updatePreferencesForItsa(testTaxId, true, None).futureValue should be(false)
+      connector.updatePreferencesForItsa(testItsaId, true, None).futureValue should be(false)
     }
   }
 
@@ -108,12 +108,7 @@ class ChannelPreferencesConnectorSpec
     implicit val hc: HeaderCarrier = HeaderCarrier()
     implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
 
-    val testTaxId: TaxId = TaxId(
-      GenerateRandom.entityId().value,
-      Some(GenerateRandom.utr().value),
-      Some(GenerateRandom.nino().value),
-      Some("X12345678901234")
-    )
+    val testItsaId: String = "HMRC-MTD-IT~MTDITID~X12345678901234"
 
     val connector: ChannelPreferencesConnector = app.injector.instanceOf[ChannelPreferencesConnector]
 

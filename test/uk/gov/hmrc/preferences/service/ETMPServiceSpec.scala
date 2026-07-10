@@ -28,7 +28,7 @@ class ETMPServiceSpec extends PlaySpec with MockitoSugar with ScalaFutures with 
       when(mockEntityResolver.getTaxIdOption(any[EntityId])(any[HeaderCarrier]))
         .thenReturn(Future.successful(Some(taxId)))
       when(
-        mockChannelPreferences.updatePreferencesForItsa(any[TaxId], any[Boolean], any[Option[String]])(
+        mockChannelPreferences.updatePreferencesForItsa(any[String], any[Boolean], any[Option[String]])(
           any[HeaderCarrier]
         )
       )
@@ -44,7 +44,7 @@ class ETMPServiceSpec extends PlaySpec with MockitoSugar with ScalaFutures with 
       when(mockEntityResolver.getTaxIdOption(any[EntityId])(any[HeaderCarrier]))
         .thenReturn(Future.successful(Some(taxId)))
       when(
-        mockChannelPreferences.updatePreferencesForItsa(any[TaxId], any[Boolean], any[Option[String]])(
+        mockChannelPreferences.updatePreferencesForItsa(any[String], any[Boolean], any[Option[String]])(
           any[HeaderCarrier]
         )
       )
