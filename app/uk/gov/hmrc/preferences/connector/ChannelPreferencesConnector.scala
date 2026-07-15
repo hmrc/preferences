@@ -44,8 +44,12 @@ class ChannelPreferencesConnector @Inject() (httpClient: HttpClientV2, servicesC
     val eventIdLog = eventId.fold("")(e => s"eventId $e")
     // DC-9128 MTD signup service sends itsaId values with prefixed enrolment key,
     // until they have updated to send unprefixed values, we need to add this check
+    val HmrcMtdItsaPrefix = "HMRC-MTD-IT~"
     val itsaIdWithEnrolmentPrefix: String =
-      if (hmrcMtdItsaId.contains("HMRC-MTD-IT~")) hmrcMtdItsaId else s"HMRC-MTD-IT~MTDBSA~$hmrcMtdItsaId"
+      if (hmrcMtdItsaId.startsWith(HmrcMtdItsaPrefix))
+        hmrcMtdItsaId.replace("MTDITID", "MTDBSA")
+      else
+        s"${HmrcMtdItsaPrefix}MTDBSA~$hmrcMtdItsaId"
     httpClient
       .post(url"$serviceUrl/channel-preferences/preference/itsa/status")
       .withBody(Json.toJson(PreferenceStatus(itsaIdWithEnrolmentPrefix, paperless)))
