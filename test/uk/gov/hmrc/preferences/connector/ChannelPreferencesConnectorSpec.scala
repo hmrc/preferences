@@ -19,7 +19,7 @@ package uk.gov.hmrc.preferences.connector
 import com.codahale.metrics.SharedMetricRegistries
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.{ aResponse, givenThat, post, urlEqualTo }
+import com.github.tomakehurst.wiremock.client.WireMock.{ aResponse, equalToJson, givenThat, post, urlEqualTo }
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatest.matchers.should.Matchers.*
@@ -46,8 +46,13 @@ class ChannelPreferencesConnectorSpec
 
   "updatePreferencesForItsa" should {
     "return true on successful response " in new TestCase {
+      val requestJson =
+        """
+          |{"enrolment": "HMRC-MTD-IT~MTDBSA~X12345678901234", "status": true}
+          |""".stripMargin
       givenThat(
         post(urlEqualTo("/channel-preferences/preference/itsa/status"))
+          .withRequestBody(equalToJson(requestJson))
           .willReturn(
             aResponse()
               .withStatus(Status.OK)
