@@ -75,7 +75,7 @@ sm2 --stop DC_PREFERENCES_IT
 | **Optin, Optout, Change email language**                       
 | ```/preferences/:entityId/terms-and-conditions```              | `POST` | DEPRECATED: See optin/optout/email-language instead of terms-and-conditions                      |
 | ```/preferences/:entityId/optin```                             | `POST` | REMOVE ROUTE: no longer used                                                                     |
-| ```/preferences/:entityId/optout```                            | `POST` | REMOVE ROUTE: no longer used                                                                     |
+| ``````                            | `POST` | REMOVE ROUTE: no longer used                                                                     |
 | ```/preferences/:entityId/email-language```                    | `POST` | REMOVE ROUTE: no longer used                                                                     |
 | ```/preferences/optin```                                       | `POST` | Opt in to paperless                                                                              |
 | ```/preferences/regime/optin```                                | `POST` | Optin - built to support ITSA                                                                    |
@@ -310,9 +310,6 @@ Example request :
 > DEPRECATED: See optin/optout/email-language instead of terms-and-conditions
 
 > #### 2.2.9.2 ```POST /preferences/:entityId/optin```
-> REMOVE ROUTE: no longer used
-
-> #### 2.2.9.3 ```POST /preferences/:entityId/optout```
 > REMOVE ROUTE: no longer used
 
 > #### 2.2.9.4 ```POST /preferences/:entityId/email-language```

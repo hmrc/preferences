@@ -148,57 +148,6 @@ class TermsAndConditionsControllerISpec extends TermsAndConditionsControllerISpe
     }
   }
 
-  "opt out for generic (G X)" should {
-    "remove the generic terms and conditions only for the given entityId if generic preference exists (GV EV -> GX EX)" in new TestCase {
-      private val entityId = GenerateRandom.entityId()
-      withEntity(entityId.toString, Option(nino.toString()), Option(utr.value))
-      preferencesTestRoutes
-        .post(
-          `/preferences/:entityId/optin`(entityId),
-          readFromResource("optInGenericPayload.json", email),
-          Some(authHelper.authHeader(nino, ggAuthPort))
-        )
-        .status must be(CREATED)
-
-      preferencesTestRoutes
-        .post(
-          `/preferences/:entityId/optout`(entityId),
-          readFromResource("optOutGenericPayload.json", email),
-          Some(authHelper.authHeader(nino, ggAuthPort))
-        )
-        .status must be(OK)
-
-      private val preferenceResponse =
-        preferencesTestRoutes.get(`/preferences/:entityId`(entityId)).json.as[PreferenceResponse]
-
-      preferenceResponse.termsAndConditions must matchPreferenceResponse(
-        Predef.Map("generic" -> false),
-        shouldBeUpdatedAfterThisTime
-      )
-      preferenceResponse.email mustBe None
-    }
-
-    "save the generic terms and conditions as optIn = false for the given entityId if no preference exists and the user refuses T&C (GX EX -> GX EX)" in new TestCase {
-      private val entityId = GenerateRandom.entityId()
-      withEntity(entityId.toString, Option(nino.toString()), Option(utr.value))
-      preferencesTestRoutes
-        .post(
-          `/preferences/:entityId/optout`(entityId),
-          readFromResource("optOutGenericPayload.json", email),
-          Some(authHelper.authHeader(nino, ggAuthPort))
-        )
-        .status must be(CREATED)
-      private val preferenceResponse =
-        preferencesTestRoutes.get(`/preferences/:entityId`(entityId)).json.as[PreferenceResponse]
-
-      preferenceResponse.termsAndConditions must matchPreferenceResponse(
-        Predef.Map("generic" -> false),
-        shouldBeUpdatedAfterThisTime
-      )
-      preferenceResponse.email mustBe None
-    }
-  }
-
   "opt in and change email address" should {
     "successfully be changed whilst opting-in" in new TestCase {
       private val entityId = GenerateRandom.entityId()

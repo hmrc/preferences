@@ -88,25 +88,5 @@ class NewTermsAndConditionsControllerISpec
         events must include("opt-in")
       }
     }
-
-    "be updated with OptOut event information" in new ISpecTestCase {
-      private val entityId = GenerateRandom.entityId()
-
-      withEntity(entityId.toString, Option(nino.toString()))
-
-      preferencesTestRoutes
-        .post(
-          `/preferences/:entityId/optout`(entityId),
-          readFromResource("optOutGenericPayload.json"),
-          Some(authHelper.authHeader(nino, ggAuthPort))
-        )
-        .status must be(CREATED)
-
-      eventually {
-        val result = preferencesTestRoutes.get(`/preferences-admin/events/:entityId`(entityId: EntityId))
-        val events = result.json.toString
-        events must include("opt-out")
-      }
-    }
   }
 }

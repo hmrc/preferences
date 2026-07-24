@@ -83,11 +83,10 @@ object PreferencesTestRoutes {
 
   def `/preferences/:entityId/orphan-status/status`(statusUrl: String): String = statusUrl.replaceAll("\"", "")
 
-  def `/preferences/:entityId/optout`(entityId: EntityId): String =
-    s"/preferences/${entityId.value}/optout"
-
   def `/preferences/:entityId/optin`(entityId: EntityId): String =
     s"/preferences/${entityId.value}/optin"
+
+  def `/preferences/optout`(): String = "/preferences/optout"
 
   val optin: String = "/preferences/optin"
 

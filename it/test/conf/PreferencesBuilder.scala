@@ -158,7 +158,7 @@ class PreferencesBuilder @Inject() (testRoutes: PreferencesTestRoutes, preferenc
         "language" -> "en"
       )
       testRoutes
-        .post(`/preferences/:entityId/optout`(entityId), stopRemindersPayload, headers)
+        .post(`/preferences/optout`(), stopRemindersPayload, headers)
         .status should be(OK)
       Builder(entityId = entityId, maybeEmail = maybeEmail, maybeVerificationLink = maybeVerificationLink)
     }
@@ -170,7 +170,7 @@ class PreferencesBuilder @Inject() (testRoutes: PreferencesTestRoutes, preferenc
 
     private def postOptout(payload: JsValue)(shouldReturnStatus: Int, headers: Option[Header]) =
       testRoutes
-        .post(`/preferences/:entityId/optout`(entityId), payload, headers)
+        .post(`/preferences/optout`(), payload, headers)
         .status shouldBe shouldReturnStatus
   }
 
