@@ -27,7 +27,6 @@ PUT     /preferences/:entityId/updated                                          
 # DEPRECATED, use optin/optout/email-language instead of terms-and-conditions
 POST    /preferences/:entityId/terms-and-conditions                                         uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
 POST    /preferences/:entityId/optin                                                        uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
-POST    /preferences/:entityId/optout                                                       uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
 POST    /preferences/:entityId/email-language                                               uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
 
 # DEPRECATED, use /preferences-admin/optout

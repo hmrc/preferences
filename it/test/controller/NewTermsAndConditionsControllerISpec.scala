@@ -96,7 +96,7 @@ class NewTermsAndConditionsControllerISpec
 
       preferencesTestRoutes
         .post(
-          `/preferences/:entityId/optout`(entityId),
+          `/preferences/optout`(),
           readFromResource("optOutGenericPayload.json"),
           Some(authHelper.authHeader(nino, ggAuthPort))
         )

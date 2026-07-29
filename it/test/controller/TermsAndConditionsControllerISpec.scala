@@ -162,7 +162,7 @@ class TermsAndConditionsControllerISpec extends TermsAndConditionsControllerISpe
 
       preferencesTestRoutes
         .post(
-          `/preferences/:entityId/optout`(entityId),
+          `/preferences/optout`(),
           readFromResource("optOutGenericPayload.json", email),
           Some(authHelper.authHeader(nino, ggAuthPort))
         )
@@ -183,7 +183,7 @@ class TermsAndConditionsControllerISpec extends TermsAndConditionsControllerISpe
       withEntity(entityId.toString, Option(nino.toString()), Option(utr.value))
       preferencesTestRoutes
         .post(
-          `/preferences/:entityId/optout`(entityId),
+          `/preferences/optout`(),
           readFromResource("optOutGenericPayload.json", email),
           Some(authHelper.authHeader(nino, ggAuthPort))
         )
