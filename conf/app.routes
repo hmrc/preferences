@@ -29,12 +29,10 @@ POST    /preferences/:entityId/terms-and-conditions                             
 POST    /preferences/:entityId/optin                                                        uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
 POST    /preferences/:entityId/email-language                                               uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.store(entityId: EntityId)
 
-# DEPRECATED, use /preferences-admin/optout
-POST    /preferences-admin/:entityId/terms-and-conditions                                   uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.optOut(entityId: EntityId)
-
 PUT     /preferences/mark-for-de-enrolment                                                  uk.gov.hmrc.preferences.controllers.PreferencesController.markForDeEnrolmentNew(params: TaxIdParams)
 PUT     /preferences/unset-de-enrolment                                                     uk.gov.hmrc.preferences.controllers.PreferencesController.unsetDeEnrolmentNew(params: TaxIdParams)
 
 POST    /preferences/email/bounce                                                           uk.gov.hmrc.preferences.controllers.EmailBounceController.process
 
 GET     /preferences-admin/events/:entityId                                                 uk.gov.hmrc.preferences.controllers.EventsController.getEvents(entityId: EntityId)
+POST    /preferences-admin/optout/:entityId                                                 uk.gov.hmrc.preferences.controllers.TermsAndConditionsController.optOut(entityId: EntityId)
