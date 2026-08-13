@@ -49,49 +49,47 @@ sm2 --stop DC_PREFERENCES_IT
 
 ### 2. API
 #### 2.1 List
-| Path                                                    | Method | Description                                                                                      |
-|---------------------------------------------------------|--------|--------------------------------------------------------------------------------------------------|
-| **Retrieve Preferences**                                |        |                                                                                                  |
-| ```/preferences```                                      | `GET`  | Retrieve preference, given a query string                                                        |
-| ```/preferences/:entityId```                            | `GET`  | Retrieve preference for a given entity id                                                        | 
-| **Retrieve Preferences by email address**               |        |                                                                                                  |
-| ```/preferences/email/:emailId```                       | `GET`  | DEPRECATED: See POST /preferences/find-by-email                                                  |
-| ```/preferences/find-by-email```                        | `POST` | Retrieve preference for a given entity id                                                        | 
-| **Retrieve verified email address**                     |        |                                                                                                  |
-| ```/preferences/verify/email-address```                 | `GET`  | DEPRECATED: See /preferences/verified-email                                                      |
-| ```/preferences/:entityId/verified-email-address```     | `GET`  | Retrieve given an entity id                                                                      |
-| ```/preferences/verified-email```                       | `GET`  | Retrieve email address, if available and valid for use in print suppression given a query string |
-| **Retrieve email language**                             |        |                                                                                                  |
-| ```/preferences/language/:emailId```                    | `GET`  | Retrieve langauge associated with the email, note email is encrypted                             |
-| **Verify email**                                        |        |                                                                                                  |
-| ```/preferences/email```                                | `PUT`  | Marks a customers email address as verified if a valid token is provided                         |
-| **Update pending email**                                |        |                                                                                                  |
-| ```/preferences/:entityId/pending-email```              | `PUT`  | DEPRECATED: See PUT /preferences/pending-email                                                   |
-| ```/preferences/pending-email```                        | `PUT`  | Change email or resend verification link                                                         | 
-| **Admin only - Get list of events**                     |        |                                                                                                  |
-| ```/preferences-admin/events/:entityId```               | `GET`  | Retrieve events for a given eventId for admin user only                                          |
-| **Updated**                                             |        |                                                                                                  |
-| ```/preferences/:entityId/updated```                    | `PUT`  | purpose? Update the print suppression status                                                     |
-| **Optin, Optout, Change email language**                |        |                                                                                                  |
-| ```/preferences/:entityId/terms-and-conditions```       | `POST` | DEPRECATED: See optin/optout/email-language instead of terms-and-conditions                      |
-| ```/preferences/:entityId/optin```                      | `POST` | REMOVE ROUTE: no longer used                                                                     |
-| ```/preferences/:entityId/email-language```             | `POST` | REMOVE ROUTE: no longer used                                                                     |
-| ```/preferences/optin```                                | `POST` | Opt in to paperless                                                                              |
-| ```/preferences/regime/optin```                         | `POST` | Optin - built to support ITSA                                                                    |
-| ```/preferences/optout```                               | `POST` | Opt out of paperless                                                                             |
-| ```/preferences/regime/optout```                        | `POST` | Optout - built to support ITSA                                                                   |
-| ```/preferences/email-language```                       | `POST` | Change email language                                                                            |
-| ```/preferences/regime/email-language```                | `POST` | Change email language - built to support ITSA                                                    |
-| **Admin only - optin/optout/email-address**             |        |                                                                                                  |
-| ```/preferences-admin/:entityId/terms-and-conditions``` | `POST` | DEPRECATED - used for opting out                                                                 |
-| ```/preferences-admin/:entityId/optout```               | `POST` | DEPRECATED - used for opting out                                                                 |
-| ```/preferences-admin/optout```                         | `POST` | Change email language - built to support ITSA                                                    |
-| **Process Bounced Email**                               |        |                                                                                                  |
-| ```/preferences/email/bounce```                         | `POST` | Process bounced emails                                                                           |
-| **Enrolment**                                           |        |                                                                                                  |
-| ```/preferences/:entityId/unset-de-enrolment```         | `PUT`  | DEPRECATED: See /preferences/unset-de-enrolment                                                  |
-| ```/preferences/mark-for-de-enrolment```                | `PUT`  |                                                                                                  |
-| ```/preferences/unset-de-enrolment```                   | `PUT`  |                                                                                                  |
+| Path                                                | Method | Description                                                                                      |
+|-----------------------------------------------------|--------|--------------------------------------------------------------------------------------------------|
+| **Retrieve Preferences**                            |        |                                                                                                  |
+| ```/preferences```                                  | `GET`  | Retrieve preference, given a query string                                                        |
+| ```/preferences/:entityId```                        | `GET`  | Retrieve preference for a given entity id                                                        | 
+| **Retrieve Preferences by email address**           |        |                                                                                                  |
+| ```/preferences/email/:emailId```                   | `GET`  | DEPRECATED: See POST /preferences/find-by-email                                                  |
+| ```/preferences/find-by-email```                    | `POST` | Retrieve preference for a given entity id                                                        | 
+| **Retrieve verified email address**                 |        |                                                                                                  |
+| ```/preferences/verify/email-address```             | `GET`  | DEPRECATED: See /preferences/verified-email                                                      |
+| ```/preferences/:entityId/verified-email-address``` | `GET`  | Retrieve given an entity id                                                                      |
+| ```/preferences/verified-email```                   | `GET`  | Retrieve email address, if available and valid for use in print suppression given a query string |
+| **Retrieve email language**                         |        |                                                                                                  |
+| ```/preferences/language/:emailId```                | `GET`  | Retrieve langauge associated with the email, note email is encrypted                             |
+| **Verify email**                                    |        |                                                                                                  |
+| ```/preferences/email```                            | `PUT`  | Marks a customers email address as verified if a valid token is provided                         |
+| **Update pending email**                            |        |                                                                                                  |
+| ```/preferences/:entityId/pending-email```          | `PUT`  | DEPRECATED: See PUT /preferences/pending-email                                                   |
+| ```/preferences/pending-email```                    | `PUT`  | Change email or resend verification link                                                         | 
+| **Admin only - Get list of events**                 |        |                                                                                                  |
+| ```/preferences-admin/events/:entityId```           | `GET`  | Retrieve events for a given eventId for admin user only                                          |
+| **Updated**                                         |        |                                                                                                  |
+| ```/preferences/:entityId/updated```                | `PUT`  | purpose? Update the print suppression status                                                     |
+| **Optin, Optout, Change email language**            |        |                                                                                                  |
+| ```/preferences/:entityId/terms-and-conditions```   | `POST` | DEPRECATED: See optin/optout/email-language instead of terms-and-conditions                      |
+| ```/preferences/:entityId/optin```                  | `POST` | REMOVE ROUTE: no longer used                                                                     |
+| ```/preferences/:entityId/email-language```         | `POST` | REMOVE ROUTE: no longer used                                                                     |
+| ```/preferences/optin```                            | `POST` | Opt in to paperless                                                                              |
+| ```/preferences/regime/optin```                     | `POST` | Optin - built to support ITSA                                                                    |
+| ```/preferences/optout```                           | `POST` | Opt out of paperless                                                                             |
+| ```/preferences/regime/optout```                    | `POST` | Optout - built to support ITSA                                                                   |
+| ```/preferences/email-language```                   | `POST` | Change email language                                                                            |
+| ```/preferences/regime/email-language```            | `POST` | Change email language - built to support ITSA                                                    |
+| **Admin only optout**                               |        |                                                                                                  |
+| ```/preferences-admin/optout/:entityId```           | `POST` | Manual opt-out                                                                                   |
+| **Process Bounced Email**                           |        |                                                                                                  |
+| ```/preferences/email/bounce```                     | `POST` | Process bounced emails                                                                           |
+| **Enrolment**                                       |        |                                                                                                  |
+| ```/preferences/:entityId/unset-de-enrolment```     | `PUT`  | DEPRECATED: See /preferences/unset-de-enrolment                                                  |
+| ```/preferences/mark-for-de-enrolment```            | `PUT`  |                                                                                                  |
+| ```/preferences/unset-de-enrolment```               | `PUT`  |                                                                                                  |
 
 
 ### 2.2 Endpoints
@@ -373,15 +371,10 @@ Responds with status:
 > #### 2.2.9.10 ```POST /preferences/regime/email-language```
 > Change email language - built to support ITSA
 
-### 2.2.10 Admin only - optout                      
-> #### 2.2.10.1 ```POST /preferences-admin/:entityId/terms-and-conditions```
-> DEPRECATED - used for opting out. If only consumed by admin frontend, this can be removed.
+### 2.2.10 Admin only - optout
 
-> #### 2.2.10.2 ```POST /preferences-admin/:entityId/optout```
-> DEPRECATED - used for opting out. If only consumed by admin frontend, this can be removed.
-
-> #### 2.2.10.3 ```POST /preferences-admin/optout```
-> Optout of paperless - go back to paper.
+> #### 2.2.10.1 ```POST /preferences-admin/:entityId/optout```
+>  Used for opting out manually via preference admin frontend
 
 ### 2.2.11 Process Bounced Email                                      
 > #### ```POST /preferences/email/bounce```
