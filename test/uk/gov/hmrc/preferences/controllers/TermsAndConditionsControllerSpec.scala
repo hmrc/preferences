@@ -263,7 +263,7 @@ class TermsAndConditionsControllerSpec extends PlaySpec with MockitoSugar with S
        """.stripMargin
     )
 
-    "be able to opt-out user from digital for generic" in new TestCase {
+    "be able to opt-out user from digital for generic t&c" in new TestCase {
       when(
         mocktermsAndConditionsService.handleTermsAndConditionsRequest(
           any[EntityId],
