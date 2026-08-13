@@ -3,7 +3,7 @@ import play.sbt.routes.RoutesKeys.routesImport
 import sbt.{ Def, * }
 
 private object AppDependencies {
-  private val hmrcMongoVersion = "2.12.0"
+  private val hmrcMongoVersion = "2.13.0"
   private val bootstrapVersion = "10.7.0"
   private val pekkoVersion = "1.0.3"
   private val hmrcDomainVersion = "13.0.0"
