@@ -74,7 +74,6 @@ class EmailVerificationControllerISpec
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
     .configure(
-      "featureFlags.usePCN" -> true,
       "auditing.enabled"    -> false,
       "metrics.enabled"     -> false
     )
