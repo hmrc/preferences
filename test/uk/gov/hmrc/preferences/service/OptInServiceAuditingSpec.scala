@@ -17,11 +17,11 @@
 package uk.gov.hmrc.preferences.service
 
 import org.bson.types.ObjectId
-import org.mockito.ArgumentMatchers.{ any, eq => eqTo }
+import org.mockito.ArgumentMatchers.{ any, eq as eqTo }
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play.PlaySpec
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.retrieve.Name
 import uk.gov.hmrc.auth.core.{ AffinityGroup, ConfidenceLevel }
 import uk.gov.hmrc.http.{ HeaderCarrier, HeaderNames }
@@ -32,9 +32,9 @@ import uk.gov.hmrc.preferences.connector.EmailConnector
 import uk.gov.hmrc.preferences.controllers.TestAudit
 import uk.gov.hmrc.preferences.controllers.model.{ Credentials, TermsAndConditionsRequest }
 import uk.gov.hmrc.preferences.model.MessageDeliveryFormat.Paper
-import uk.gov.hmrc.preferences.model.TermsAndConditions._
-import uk.gov.hmrc.preferences.model._
-import uk.gov.hmrc.preferences.repository.{ PreferenceUpdated, PreferencesRepository }
+import uk.gov.hmrc.preferences.model.TermsAndConditions.*
+import uk.gov.hmrc.preferences.model.*
+import uk.gov.hmrc.preferences.repository.{ NewPreferenceCreated, PreferenceUpdateResult, PreferenceUpdated, PreferencesRepository }
 import uk.gov.hmrc.preferences.util.Dc
 
 import java.time.Instant
@@ -252,7 +252,7 @@ class OptInServiceAuditingSpec extends PlaySpec with MockitoSugar {
         .thenReturn(Future.successful(()))
 
       // when
-      await(
+      val result: PreferenceUpdateResult = await(
         resource
           .optInToDigital(
             entityId,
@@ -263,6 +263,8 @@ class OptInServiceAuditingSpec extends PlaySpec with MockitoSugar {
             OptInBundle(Some(optInPage), Some(OptEventType.OptIn))
           )
       )
+
+      result mustBe PreferenceUpdated
 
       // then
       private val dataEvent =
