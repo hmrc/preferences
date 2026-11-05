@@ -16,17 +16,22 @@
 
 package uk.gov.hmrc.preferences.controllers.testonly
 
+import cats.data.EitherT
+
 import javax.inject.{ Inject, Singleton }
 import play.api.Logger
-import play.api.libs.json._
+import play.api.libs.json.*
+import play.api.mvc.Results.NotFound
 import play.api.mvc.{ Action, AnyContent, ControllerComponents, Result }
 import uk.gov.hmrc.http.{ HeaderCarrier, NotFoundException }
-import uk.gov.hmrc.preferences.CurrentTime
+import uk.gov.hmrc.paperless.controllers.model.PreferenceResponse
+import uk.gov.hmrc.preferences.{ CurrentTime, PreferencesParams, ResolveParams, TaxIdParams }
 import uk.gov.hmrc.play.bootstrap.backend.controller.BackendBaseController
-import uk.gov.hmrc.preferences.connector.Bounce
-import uk.gov.hmrc.preferences.model._
-import uk.gov.hmrc.preferences.repository._
-import uk.gov.hmrc.preferences.service._
+import uk.gov.hmrc.preferences.connector.{ Bounce, EntityResolverConnector }
+import uk.gov.hmrc.preferences.controllers.{ EmailRequest, httpErrorResultForEntity }
+import uk.gov.hmrc.preferences.model.*
+import uk.gov.hmrc.preferences.repository.*
+import uk.gov.hmrc.preferences.service.*
 import uk.gov.hmrc.preferences.util.{ DateFormats, Dc }
 
 import java.time.Instant
@@ -37,6 +42,7 @@ class AdminController @Inject() (
   saIndividualPrintPreferencesRepository: PreferencesRepository,
   emailBounceQueueMonitorService: EmailBounceQueueMonitorService,
   verificationChaser: VerificationChaser,
+  entityResolver: EntityResolverConnector,
   override val controllerComponents: ControllerComponents
 )(implicit ec: ExecutionContext)
     extends BackendBaseController with CurrentTime {
@@ -163,4 +169,41 @@ class AdminController @Inject() (
     verificationChaser.chaseVerifications.map(_ => Ok)
   }
 
+  def findPreferencesByEmail(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    withJsonBody[EmailRequest] { emailRequest =>
+      saIndividualPrintPreferencesRepository.findByEmail(emailRequest.email) map {
+        case Nil => NotFound(s"No Preferences exist for '${emailRequest.email}'")
+        case preferences =>
+          Ok(Json.toJson(preferences))
+      } recover { case e =>
+        NotFound(e.getMessage)
+      }
+    }
+  }
+
+  def findPreferencesByEntityId(entityId: EntityId): Action[AnyContent] =
+    Action.async { implicit request =>
+      saIndividualPrintPreferencesRepository.findBy(entityId).map { preference =>
+        preference.fold(NotFound("Preference not found"))(pref => Ok(Json.toJson(preference)))
+      } recover { case e =>
+        NotFound(e.getMessage)
+      }
+    }
+
+  def findPreferencesByNino(nino: String): Action[AnyContent] =
+    Action.async { implicit request =>
+      findByNino("paye", nino) recover { case e =>
+        NotFound(e.getMessage)
+      }
+    }
+
+  private def findByNino(tr: String, tid: String)(implicit hc: HeaderCarrier): Future[Result] = {
+    val result = for {
+      entityId <- entityResolver
+                    .getEntityIdByTaxId(tr, tid)
+                    .leftMap(httpErrorResultForEntity)
+      preference <- EitherT.liftF(saIndividualPrintPreferencesRepository.findBy(entityId))
+    } yield preference.fold(NotFound("Preference not found"))(pref => Ok(Json.toJson(preference).toString))
+    result.merge
+  }
 }

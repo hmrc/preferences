@@ -32,9 +32,10 @@ import utils.TestData.{ TEST_CODE, TEST_EMAIL, TEST_ENTITY_ID, TEST_FORM_TYPE, T
 import play.api.test.Helpers.*
 import utils.{ FakeApplicationCrypto, SpecBase }
 import org.mockito.ArgumentMatchers.any
-import play.api.libs.json.Json
+import play.api.libs.json.{ JsValue, Json }
 import uk.gov.hmrc.crypto.{ Decrypter, Encrypter }
 import uk.gov.hmrc.preferences.connector.Bounce
+import uk.gov.hmrc.preferences.controllers.EmailRequest
 import uk.gov.hmrc.preferences.model.{ EmailVerificationLink, PendingEmailAddress }
 
 import java.time.{ Duration, Instant }
@@ -282,6 +283,109 @@ class AdminControllerSpec extends SpecBase {
     }
   }
 
+  "findPreferencesByEmail" should {
+    import EmailRequest.fmt
+
+    "return OK with the preferences for the given email address" in new Setup {
+      when(mockPreferencesRepository.findByEmail(any)(any)).thenReturn(Future.successful(Seq(TEST_PREFERENCES)))
+
+      val request: FakeRequest[JsValue] =
+        fakeRequest(POST, routes.AdminController.findPreferencesByEmail().url).withBody(Json.toJson(testEmail))
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe OK
+    }
+
+    "return NOT_FOUND if no preferences is found for the given email address" in new Setup {
+      when(mockPreferencesRepository.findByEmail(any)(any)).thenReturn(Future.successful(Nil))
+
+      val request: FakeRequest[JsValue] =
+        fakeRequest(POST, routes.AdminController.findPreferencesByEmail().url).withBody(Json.toJson(testEmail))
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe NOT_FOUND
+    }
+
+    "return NotFound if NotFoundException occurs while fetching the preferences" in new Setup {
+      when(mockPreferencesRepository.findByEmail(any)(any))
+        .thenReturn(Future.failed(TEST_HTTP_NOT_FOUND_EXCEPTION))
+
+      val request: FakeRequest[JsValue] =
+        fakeRequest(POST, routes.AdminController.findPreferencesByEmail().url).withBody(Json.toJson(testEmail))
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe NOT_FOUND
+    }
+  }
+
+  "findPreferencesByEntityId" should {
+
+    "return OK with the preferences for the given entityId" in new Setup {
+      when(mockPreferencesRepository.findBy(any)(any)).thenReturn(Future.successful(Some(TEST_PREFERENCES)))
+
+      val request: FakeRequest[AnyContentAsEmpty.type] =
+        fakeRequest(GET, routes.AdminController.findPreferencesByEntityId(TEST_ENTITY_ID).url)
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe OK
+    }
+
+    "return NOT_FOUND if no preferences is found for the given entityId" in new Setup {
+      when(mockPreferencesRepository.findBy(any)(any)).thenReturn(Future.successful(None))
+
+      val request: FakeRequest[AnyContentAsEmpty.type] =
+        fakeRequest(GET, routes.AdminController.findPreferencesByEntityId(TEST_ENTITY_ID).url)
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe NOT_FOUND
+    }
+
+    "return NotFound if NotFoundException occurs while fetching the preferences" in new Setup {
+      when(mockPreferencesRepository.findBy(any)(any))
+        .thenReturn(Future.failed(TEST_HTTP_NOT_FOUND_EXCEPTION))
+
+      val request: FakeRequest[AnyContentAsEmpty.type] =
+        fakeRequest(GET, routes.AdminController.findPreferencesByEntityId(TEST_ENTITY_ID).url)
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe NOT_FOUND
+    }
+  }
+
+  "findPreferencesByNino" should {
+
+    "return OK with the preferences for the given nino" in new Setup {
+      when(mockPreferencesRepository.findBy(any)(any)).thenReturn(Future.successful(Some(TEST_PREFERENCES)))
+
+      val request: FakeRequest[AnyContentAsEmpty.type] =
+        fakeRequest(GET, routes.AdminController.findPreferencesByNino(TEST_NINO).url)
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe OK
+    }
+
+    "return NOT_FOUND if no preferences is found for the given nino" in new Setup {
+      when(mockPreferencesRepository.findBy(any)(any)).thenReturn(Future.successful(None))
+
+      val request: FakeRequest[AnyContentAsEmpty.type] =
+        fakeRequest(GET, routes.AdminController.findPreferencesByNino(TEST_NINO).url)
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe NOT_FOUND
+    }
+
+    "return NotFound if NotFoundException occurs while fetching the preferences" in new Setup {
+      when(mockPreferencesRepository.findBy(any)(any))
+        .thenReturn(Future.failed(TEST_HTTP_NOT_FOUND_EXCEPTION))
+
+      val request: FakeRequest[AnyContentAsEmpty.type] =
+        fakeRequest(GET, routes.AdminController.findPreferencesByNino(TEST_NINO).url)
+
+      val result: Future[Result] = route(app, request).value
+      status(result) mustBe NOT_FOUND
+    }
+  }
+
   trait Setup {
     val mockPreferencesRepository: PreferencesRepository = mock[PreferencesRepository]
     val mockEmailBounceQueueMonitorService: EmailBounceQueueMonitorService = mock[EmailBounceQueueMonitorService]
@@ -295,6 +399,8 @@ class AdminControllerSpec extends SpecBase {
       formType = Some(TEST_FORM_TYPE),
       nino = Some(TEST_NINO)
     )
+
+    val testEmail = EmailRequest("test@test.com")
 
     val app: Application = applicationBuilder
       .overrides(
