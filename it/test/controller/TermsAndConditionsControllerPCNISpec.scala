@@ -56,8 +56,8 @@ class TermsAndConditionsControllerPCNISpec
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
     .configure(
-      "auditing.enabled"    -> false,
-      "metrics.enabled"     -> false
+      "auditing.enabled" -> false,
+      "metrics.enabled"  -> false
     )
     .overrides(bind[Decrypter].toInstance(FakeApplicationCrypto))
     .build()
