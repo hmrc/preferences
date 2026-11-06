@@ -23,5 +23,5 @@ POST          /test-only/preferences-admin/:entityId/verify-email               
 #internal only
 POST          /test-only/preferences-admin/process-verification-reminders                           uk.gov.hmrc.preferences.controllers.testonly.AdminController.processVerificationReminders()
 POST          /test-only/preferences/find-by-email                                                  uk.gov.hmrc.preferences.controllers.testonly.AdminController.findPreferencesByEmail()
+GET           /test-only/preferences/nino/:nino                                                     uk.gov.hmrc.preferences.controllers.testonly.AdminController.findPreferencesByNino(nino: String)
 GET           /test-only/preferences/:entityId                                                      uk.gov.hmrc.preferences.controllers.testonly.AdminController.findPreferencesByEntityId(entityId: EntityId)
-GET           /test-only/preferences/:nino                                                          uk.gov.hmrc.preferences.controllers.testonly.AdminController.findPreferencesByNino(nino: String)

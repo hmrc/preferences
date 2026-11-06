@@ -16,6 +16,7 @@
 
 package uk.gov.hmrc.preferences.controllers.testonly
 
+import cats.data.EitherT
 import org.bson.types.ObjectId
 import org.mockito.Mockito.when
 import org.scalatest.concurrent.ScalaFutures
@@ -28,15 +29,15 @@ import play.api.test.FakeRequest
 import uk.gov.hmrc.http.{ HeaderCarrier, NotFoundException }
 import uk.gov.hmrc.preferences.repository.{ BrokenVerificationLinkException, PreferenceUpdated, PreferencesRepository }
 import uk.gov.hmrc.preferences.service.{ EmailBounceQueueMonitorService, ProcessingResult, VerificationChaser }
-import utils.TestData.{ TEST_CODE, TEST_EMAIL, TEST_ENTITY_ID, TEST_FORM_TYPE, TEST_HTTP_NOT_FOUND_EXCEPTION, TEST_NINO, TEST_PREFERENCES, TEST_SOURCE, TEST_TIME_INSTANT }
+import utils.TestData.*
 import play.api.test.Helpers.*
 import utils.{ FakeApplicationCrypto, SpecBase }
 import org.mockito.ArgumentMatchers.any
 import play.api.libs.json.{ JsValue, Json }
 import uk.gov.hmrc.crypto.{ Decrypter, Encrypter }
-import uk.gov.hmrc.preferences.connector.Bounce
+import uk.gov.hmrc.preferences.connector.{ Bounce, EntityResolverConnector }
 import uk.gov.hmrc.preferences.controllers.EmailRequest
-import uk.gov.hmrc.preferences.model.{ EmailVerificationLink, PendingEmailAddress }
+import uk.gov.hmrc.preferences.model.{ EmailVerificationLink, EntityId, PendingEmailAddress }
 
 import java.time.{ Duration, Instant }
 import scala.concurrent.{ ExecutionContext, Future }
@@ -355,6 +356,8 @@ class AdminControllerSpec extends SpecBase {
   "findPreferencesByNino" should {
 
     "return OK with the preferences for the given nino" in new Setup {
+      when(mockEntityResolverConnector.getEntityIdByTaxId(any, any)(any))
+        .thenReturn(EitherT.rightT[Future, EntityId](TEST_ENTITY_ID))
       when(mockPreferencesRepository.findBy(any)(any)).thenReturn(Future.successful(Some(TEST_PREFERENCES)))
 
       val request: FakeRequest[AnyContentAsEmpty.type] =
@@ -365,6 +368,8 @@ class AdminControllerSpec extends SpecBase {
     }
 
     "return NOT_FOUND if no preferences is found for the given nino" in new Setup {
+      when(mockEntityResolverConnector.getEntityIdByTaxId(any, any)(any))
+        .thenReturn(EitherT.rightT[Future, EntityId](TEST_ENTITY_ID))
       when(mockPreferencesRepository.findBy(any)(any)).thenReturn(Future.successful(None))
 
       val request: FakeRequest[AnyContentAsEmpty.type] =
@@ -375,6 +380,8 @@ class AdminControllerSpec extends SpecBase {
     }
 
     "return NotFound if NotFoundException occurs while fetching the preferences" in new Setup {
+      when(mockEntityResolverConnector.getEntityIdByTaxId(any, any)(any))
+        .thenReturn(EitherT.rightT[Future, EntityId](TEST_ENTITY_ID))
       when(mockPreferencesRepository.findBy(any)(any))
         .thenReturn(Future.failed(TEST_HTTP_NOT_FOUND_EXCEPTION))
 
@@ -390,6 +397,7 @@ class AdminControllerSpec extends SpecBase {
     val mockPreferencesRepository: PreferencesRepository = mock[PreferencesRepository]
     val mockEmailBounceQueueMonitorService: EmailBounceQueueMonitorService = mock[EmailBounceQueueMonitorService]
     val mockVerificationChaser: VerificationChaser = mock[VerificationChaser]
+    val mockEntityResolverConnector = mock[EntityResolverConnector]
 
     val bounce: Bounce = Bounce(
       emailAddress = TEST_EMAIL,
@@ -405,6 +413,7 @@ class AdminControllerSpec extends SpecBase {
     val app: Application = applicationBuilder
       .overrides(
         inject.bind[PreferencesRepository].toInstance(mockPreferencesRepository),
+        inject.bind[EntityResolverConnector].toInstance(mockEntityResolverConnector),
         inject.bind[EmailBounceQueueMonitorService].toInstance(mockEmailBounceQueueMonitorService),
         inject.bind[VerificationChaser].toInstance(mockVerificationChaser),
         inject.bind[Decrypter].toInstance(FakeApplicationCrypto)
